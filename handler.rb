@@ -1,5 +1,28 @@
-require 'json'
+# frozen_string_literal: true
 
-def hello(event:, context:)
-  { statusCode: 200, body: JSON.generate('Go Serverless v1.0! Your function executed successfully!') }
+require 'json'
+require 'aws-sdk'
+
+def mail(event:, context:)
+  ses = Aws::SES::Client.new
+  ses.send_email(
+    destination: {
+      to_addresses: [ENV['TO_ADDRESS']]
+    },
+    message: {
+      subject: {
+        data: 'subject',
+        charset: 'UTF-8'
+      },
+      body: {
+        text: {
+          data: 'body',
+          charset: 'UTF-8'
+        }
+      }
+    },
+    source: ENV['FROM_ADDRESS']
+  )
+
+  { statusCode: 200 }
 end
