@@ -24,5 +24,12 @@ def mail(event:, context:)
     source: ENV['FROM_ADDRESS']
   )
 
-  { statusCode: 200 }
+  {
+    statusCode: 200,
+    headers: {
+      "Access-Control-Allow-Origin": '*',
+      "Access-Control-Allow-Credentials": true
+    },
+    body: 'success'.to_json
+  }
 end
